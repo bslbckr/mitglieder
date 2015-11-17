@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+  <changeSet author="bb (generated)" id="1447770625182-1">
+    <createSequence sequenceName="guc_next_row_id"/>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-2">
+        <createTable tableName="dfv">
+            <column autoIncrement="true" name="uuid" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="dfv_pkey"/>
+            </column>
+            <column name="id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dfvnummer" type="INT"/>
+            <column name="dse" type="BOOL"/>
+            <column name="rabatt" type="BOOL"/>
+            <column name="gueltig_ab" type="date"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-3">
+        <createTable tableName="kontaktdaten">
+            <column autoIncrement="true" name="uuid" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="kontaktdaten_pkey"/>
+            </column>
+            <column name="id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="strasse" type="VARCHAR(100)"/>
+            <column name="plz" type="INT"/>
+            <column name="ort" type="VARCHAR(100)"/>
+            <column name="email" type="VARCHAR(100)"/>
+            <column name="festnetz" type="VARCHAR(20)"/>
+            <column name="mobil" type="VARCHAR(20)"/>
+            <column name="verteiler" type="BOOL"/>
+            <column name="gueltig_ab" type="date"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-4">
+        <createTable tableName="stammdaten">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="stammdaten_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="vorname" type="VARCHAR(100)"/>
+            <column name="eintrittsdatum" type="date"/>
+            <column name="geburtsdatum" type="date"/>
+            <column name="austrittsdatum" type="date"/>
+            <column name="geschlecht" type="SEX_ENUM(2147483647)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-5">
+        <createTable tableName="status">
+            <column autoIncrement="true" name="uuid" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="status_pkey"/>
+            </column>
+            <column name="id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gueltig_ab" type="date"/>
+            <column name="status" type="STATUS_ENUM(2147483647)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-6">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="dfv" constraintName="fk1_dfv" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="stammdaten"/>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-7">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="kontaktdaten" constraintName="fk1_kontakt" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="stammdaten"/>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-8">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="status" constraintName="fk1_status" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="stammdaten"/>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-9">
+        <createView fullDefinition="false" viewName="akt_dfv"> SELECT dfv.uuid,
+    dfv.id,
+    dfv.dfvnummer,
+    dfv.dse,
+    dfv.rabatt,
+    dfv.gueltig_ab
+   FROM dfv
+  WHERE ((dfv.uuid, 1) IN ( SELECT dfv_1.uuid,
+            row_number() OVER (PARTITION BY dfv_1.id ORDER BY dfv_1.gueltig_ab DESC) AS row_number
+           FROM dfv dfv_1
+          WHERE (dfv_1.gueltig_ab &lt;= ('now'::text)::date)));</createView>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-10">
+        <createView fullDefinition="false" viewName="akt_kontaktdaten"> SELECT kontaktdaten.uuid,
+    kontaktdaten.id,
+    kontaktdaten.strasse,
+    kontaktdaten.plz,
+    kontaktdaten.ort,
+    kontaktdaten.email,
+    kontaktdaten.festnetz,
+    kontaktdaten.mobil,
+    kontaktdaten.verteiler,
+    kontaktdaten.gueltig_ab
+   FROM kontaktdaten
+  WHERE ((kontaktdaten.uuid, 1) IN ( SELECT kontaktdaten_1.uuid,
+            row_number() OVER (PARTITION BY kontaktdaten_1.id ORDER BY kontaktdaten_1.gueltig_ab DESC) AS row_number
+           FROM kontaktdaten kontaktdaten_1
+          WHERE (kontaktdaten_1.gueltig_ab &lt;= ('now'::text)::date)));</createView>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-11">
+        <createView fullDefinition="false" viewName="akt_mitglieder"> SELECT stammdaten.vorname,
+    stammdaten.name,
+    stammdaten.geschlecht,
+    stammdaten.geburtsdatum,
+    stammdaten.eintrittsdatum,
+    stammdaten.austrittsdatum,
+    stammdaten.id,
+    akt_status.status,
+    akt_kontaktdaten.strasse,
+    akt_kontaktdaten.plz,
+    akt_kontaktdaten.ort,
+    akt_kontaktdaten.email,
+    akt_kontaktdaten.mobil,
+    akt_kontaktdaten.festnetz,
+    akt_kontaktdaten.verteiler,
+    akt_dfv.dfvnummer,
+    akt_dfv.dse,
+    akt_dfv.rabatt
+   FROM stammdaten,
+    akt_status,
+    akt_kontaktdaten,
+    akt_dfv
+  WHERE (((((stammdaten.eintrittsdatum &lt;= ('now'::text)::date) AND ((stammdaten.austrittsdatum &gt; ('now'::text)::date) OR (stammdaten.austrittsdatum IS NULL))) AND (stammdaten.id = akt_status.id)) AND (stammdaten.id = akt_kontaktdaten.id)) AND (stammdaten.id = akt_dfv.id));</createView>
+    </changeSet>
+    <changeSet author="bb (generated)" id="1447770625182-12">
+        <createView fullDefinition="false" viewName="akt_status"> SELECT status.uuid,
+    status.id,
+    status.gueltig_ab,
+    status.status
+   FROM status
+  WHERE ((status.uuid, 1) IN ( SELECT status_1.uuid,
+            row_number() OVER (PARTITION BY status_1.id ORDER BY status_1.gueltig_ab DESC) AS row_number
+           FROM status status_1
+          WHERE (status_1.gueltig_ab &lt;= ('now'::text)::date)));</createView>
+    </changeSet>
+</databaseChangeLog>

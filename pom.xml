@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>de.bb.mitglieder</groupId>
+  <artifactId>mitglieder</artifactId>
+  <version>0.9.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <properties>
+    <!-- consider setting the values for db.user and db.password as
+	 command-line parameters instead of writing them down in the
+	 project's pom.xml. -->
+    <db.user>db.user</db.user>
+    <db.password>secret</db.password>
+    <!-- should be changed to the name you'd like your db to have -->
+    <db.name>guc_mitglieder</db.name>
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+	<plugin>
+	  <groupId>org.liquibase</groupId>
+	  <artifactId>liquibase-maven-plugin</artifactId>
+	  <version>3.4.1</version>
+	  <configuration>
+	    <driver>${jdbc.driver.name}</driver>
+	    <url>${jdbc.driver.url}</url>
+	    <user>${db.user}</user>
+	    <password>${db.password}</password>
+	    <changeLogFile>src/main/resources/changelog/changelog-master.xml</changeLogFile>
+	  </configuration>
+	</plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <profiles>
+    <profile>
+      <id>postgres</id>
+      <activation>
+	<activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+	<jdbc.driver.name>org.postgresql.Driver</jdbc.driver.name>
+	<jdbc.driver.url>jdbc:postgresql://127.0.0.1:5432/${db.name}</jdbc.driver.url>
+      </properties>
+      <dependencies>
+      <dependency>
+	<groupId>org.postgresql</groupId>
+	<artifactId>postgresql</artifactId>
+	<version>9.4-1205-jdbc42</version>
+</dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+</project>
