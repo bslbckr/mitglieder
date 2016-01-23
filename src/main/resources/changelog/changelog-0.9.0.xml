@@ -139,4 +139,7 @@
            FROM status status_1
           WHERE (status_1.gueltig_ab &lt;= ('now'::text)::date)));</createView>
     </changeSet>
-</databaseChangeLog>
+    <changeSet author="bb" id="20160123-1">
+      <tagDatabase tag="version_0_9" />
+    </changeSet>
+  </databaseChangeLog>
