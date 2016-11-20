@@ -1,0 +1,26 @@
+{
+    "name": "mitglieder",
+    "version": "0.0.1",
+    "description": "Mitglieder Verwaltung",
+    "main": "src/main/javascript/app.js",
+    "dependencies": {
+        "angular": "~1.5.0",
+	"angular-resource": "~1.5.0"
+    },
+    "devDependencies": {
+        "browserify": "~13.0.0",
+        "jslint": "^0.9.6",
+        "minifyify": "~7.3.2"
+    },
+    "scripts": {
+        "lint": "jslint --node src/main/javascript/app.js",
+        "copy-resources": "cp src/main/javascript/index.html target/index.html",
+        "prebuild": "npm run-script copy-resources",
+        "build": "browserify src/main/javascript/app.js -d -p [minifyify --map target/app.js.map --output target/app.js.map] > target/app.min.js",
+        "predebug-build": "npm run-script copy-resources",
+        "debug-build": "browserify src/main/javascript/app.js > target/app.min.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Basil",
+    "license": "MIT"
+}
