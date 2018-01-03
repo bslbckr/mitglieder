@@ -1,0 +1,27 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th >Vorname</th>
+            <th >Nachname</th>
+            <th>E-Mail</th>
+            <th >Geschlecht</th>
+            <th >Status</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="members" >
+        <tr  *ngFor="let member of members">
+            <td>{{member.vorname}}</td>
+            <td >{{member.name}}</td>
+            <td><a [href]="'mailto:'+member.email"><span class="glyphicon glyphicon-envelope"></span></a>&nbsp;{{member.email}}</td>
+            <td >{{member.geschlecht}}</td>
+            <td>{{member.status}}</td>
+            <td><a [routerLink]="'/member/'+member.id"><span class="glyphicon glyphicon-search" ></span></a></td>
+        </tr>
+    </tbody>
+</table>
+
+
+<!-- <button class="btn btn-default" type="button" (click)="sendMails()">Testmails</button> -->
+<a routerLink="lsb" >LSB</a>
+<a [href]="downloadUrl"><span class="glyphicon glyphicon-export" ></span></a>

@@ -1,0 +1,18 @@
+<ng-container *ngIf="membersPerYear" >
+    <table class="table-striped table">
+        <thead>
+            <tr>
+                <th>Jahr</th>
+                <th>Frauen</th>
+                <th>Gesamt</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let mem of membersPerYear" >
+                <td>{{mem.year}}</td>
+                <td>{{mem.women}}</td>
+                <td>{{mem.total}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>

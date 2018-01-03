@@ -1,0 +1,95 @@
+<div class="btn-group" role="group" >
+        <a routerLink="/" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+        </a>
+        <a routerLink="edit" class="btn btn-default">
+            <span class="glyphicon glyphicon-edit" ></span>
+        </a>
+</div>
+<ng-container *ngIf="member" >
+    <h3>Detailansicht {{member.vorname}} {{member.name}}</h3>
+    <div class="row" >
+    <div class="col-md-4" >
+        <div class="row" >
+            <div class="col-md-8" >
+                {{member.strasse}}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-2" >
+                {{member.plz}}
+            </div>
+            <div class="col-md-9" >
+                {{member.ort}}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-8" >
+                {{member.festnetz}}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-8" >
+                {{member.mobil}}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-8" >
+                <a [href]="'mailto:'+member.email">{{member.email}}</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row" >
+            <div class="col-md-3" >
+                Status
+            </div>
+            <div class="col-md-8" >
+                {{member.status}}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-3" >
+                DFV-Nummer
+            </div>
+            <div class="col-md-8" >
+                {{member.dfvnummer}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" >
+                DSE:
+            </div>
+            <div class="col-md-1" >
+                <span  [ngClass]="{'glyphicon':true,'glyphicon-check':member.dse, 'glyphicon-unchecked':!member.dse}" ></span>
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-3" >
+                Rabatt
+            </div>
+            <div class="col-md-1" >
+                <span [ngClass]="{'glyphicon':true,'glyphicon-check':member.rabatt, 'glyphicon-unchecked':!member.rabatt}" ></span>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="vert-space"></div>
+    <div class="row" >
+    <div class="col-md-1" >
+        Geburtstag
+    </div>
+    <div class="col-md-2" >
+        <input class="form-control" type="date" [value]="member.geburtsdatum" readonly>
+    </div>
+    <div class="col-md-1" >Eintrittsdatum</div>
+    <div class="col-md-2" >
+        <input class=" form-control" type="date" [value]="member.eintrittsdatum"  readonly >
+    </div>
+    <div class="col-md-1" >Austrittsdatum</div>
+    <div class="col-md-2" >
+        <input class="form-control" type="date" [value]="member.austrittsdatum" readonly *ngIf="member.austrittsdatum" >
+    </div>
+        
+    </div>
+</ng-container>

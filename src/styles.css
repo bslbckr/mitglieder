@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+
+.vert-space {
+    margin: 0;
+    padding: 0;
+    height: 1em;
+    display: block;
+    content: "&nbsp;";
+}
