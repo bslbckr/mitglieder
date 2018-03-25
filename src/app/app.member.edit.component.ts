@@ -16,13 +16,17 @@ export class MemberEditComponent implements OnInit {
     constructor(private data: DataService, private actRoute: ActivatedRoute, private router: Router) { }
 
     ngOnInit() {
-        this.subscription = this.actRoute.paramMap.subscribe(params =>
-            this.data.getMemberDetails(params.get('id'))
-                .then(m => {
-                    this.originalMember = m;
-                    this.member = {} as Member;
-                    this.revert();
-                }));
+        this.subscription = this.actRoute.paramMap.subscribe(params => {
+            const paramId: string | null = params.get('id');
+            if (paramId != null) {
+                this.data.getMemberDetails(paramId)
+                    .then(m => {
+                        this.originalMember = m;
+                        this.member = {} as Member;
+                        this.revert();
+                    });
+            }
+        });
     }
 
     ngOnDestroy() {

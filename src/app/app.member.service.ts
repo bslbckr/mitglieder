@@ -4,8 +4,8 @@ import { Member } from './model/member'
 @Injectable()
 export class MemberService {
 
-    reduceMembersLSB(inputMembers: Member[]): { year: number, women: number, total: number }[] | null {
-        var result: { year: number, women: number, total: number }[] = null;
+    reduceMembersLSB(inputMembers: Member[]): { year: number, women: number, total: number }[] {
+        var result: { year: number, women: number, total: number }[] = [];
         if (inputMembers && inputMembers.length > 0) {
             var reduced: ReducedMember[] = [];
             inputMembers.forEach(mem => {
@@ -16,8 +16,10 @@ export class MemberService {
             });
             reduced.sort((a: ReducedMember, b: ReducedMember) => { return a.year - b.year });
             var redux: MemberReducer = new MemberReducer();
-            var tmpResult = reduced.reduce(redux.reduce.bind(redux), { current: null, result: [] });
-            if (tmpResult.current) { tmpResult.result.push(tmpResult.current); }
+            var tmpResult: Accumulator = reduced.reduce(redux.reduce.bind(redux), { current: null, result: [] });
+            if (tmpResult.current) {
+                tmpResult.result.push(tmpResult.current);
+            }
             result = tmpResult.result;
         }
         return result;
@@ -30,7 +32,7 @@ interface ReducedMember {
 }
 
 interface Accumulator {
-    current: { year: number, women: number, total: number };
+    current: { year: number, women: number, total: number } | null;
     result: { year: number, women: number, total: number }[];
 }
 

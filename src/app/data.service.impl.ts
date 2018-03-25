@@ -38,7 +38,7 @@ export class DataServiceImpl extends DataService {
 
     sendMemberUpdateMails(members: Member[]): Promise<string[]> {
         var mailJetUrl = environment.mailjetEndpoint;
-        var payload = {
+        var payload: any = {
             Messages: [],
             SandboxMode: true
         };
@@ -125,7 +125,7 @@ export class DataServiceImpl extends DataService {
                 Email: m.email,
                 Name: `${m.vorname} ${m.name}`
             }],
-            Subject: null,
+            Subject: '',
             TemplateLanguage: true,
             Variables: {},
             TemplateErrorReporting: {
