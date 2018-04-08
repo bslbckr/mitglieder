@@ -1,16 +1,18 @@
+[![Build Status](https://travis-ci.org/bslbckr/mitglieder.svg?branch=master)](https://travis-ci.org/bslbckr/mitglieder)
+
 # Mitglieder
 kleines Projekt zur Verwaltung von Mitgliedern eines Ultimate-Frisbee
 Vereins. Momentan leistet das Projekt das Folgende:
-* Für jedes Mitglied werden Stammdaten, Kontaktdaten,
+* FÃ¼r jedes Mitglied werden Stammdaten, Kontaktdaten,
 Statusinformationen und DFV-spezifische Dinge verwaltet.
-* Jeder Datensatz hat einen "gültig ab" Eintrag, der angibt, ab wann
-die Informationen Gültikeit besitzen.
-* Es kann für jedes Mitglied eine Historie über die Daten angezeigt
+* Jeder Datensatz hat einen "gÃ¼ltig ab" Eintrag, der angibt, ab wann
+die Informationen GÃ¼ltikeit besitzen.
+* Es kann fÃ¼r jedes Mitglied eine Historie Ã¼ber die Daten angezeigt
 werden.
 * Der Mitgliederstand zu einem Zeitpunkt in der Vergangenheit kann
 abgefragt werden.
 
 ## Ausblick
-Momentan ist das Tool nur per SQL bedienbar, was nicht unbedingt schön
+Momentan ist das Tool nur per SQL bedienbar, was nicht unbedingt schÃ¶n
 ist (aber alles bietet was ich brauche ;) ). Was noch fehlt ist ein
-zeitgemäßes Frontend ...
+zeitgemÃ¤ÃŸes Frontend ...
