@@ -1,4 +1,7 @@
 language: node_js
+suod: required
+services:
+  - docker
 node_js:
   - "6"
 cache:
