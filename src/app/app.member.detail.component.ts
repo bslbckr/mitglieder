@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Member } from './model/member'
-import { DataService } from './data.service'
-import { ActivatedRoute } from '@angular/router'
-import { Subscription } from 'rxjs/Subscription'
+import { Member } from './model/member';
+import { DataService } from './data.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-    selector: 'member-detail',
+    selector: 'app-member-detail',
     templateUrl: './app.member.detail.component.html'
 })
 export class MemberDetailComponent implements OnInit, OnDestroy {
@@ -19,7 +19,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
                 const memberId: string | null = params.get('id');
                 if (memberId != null) {
                     this.data.getMemberDetails(memberId)
-                        .then(m => { this.member = m; })
+                        .then(m => { this.member = m; });
                 }
             });
     }

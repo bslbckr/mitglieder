@@ -25,7 +25,7 @@ describe('Service: DataServiceImpl', () => {
                 {
                     deps: [MockBackend, BaseRequestOptions],
                     provide: Http,
-                    useFactory: (backend: MockBackend, defOpts: BaseRequestOptions) => { return new Http(backend, defOpts); }
+                    useFactory: (backend: MockBackend, defOpts: BaseRequestOptions) => new Http(backend, defOpts)
                 }]
         });
         const testBed = getTestBed();
@@ -61,8 +61,8 @@ describe('Service: DataServiceImpl', () => {
             vorname: 'James',
             geburtsdatum: '1970-1-2',
             eintrittsdatum: '2017-5-1',
-            geschlecht: 'männlich',
-            status: 'berufstätig',
+            geschlecht: 'mï¿½nnlich',
+            status: 'berufstï¿½tig',
             dfvnummer: 123456,
             dse: true,
             rabatt: false,
@@ -73,7 +73,7 @@ describe('Service: DataServiceImpl', () => {
             mobil: 'auch',
             verteiler: true,
             email: 'james.test@exmaple.com',
-            austrittsdatum: null
+            austrittsdatum: ''
         };
         return result;
     }
@@ -90,10 +90,10 @@ describe('Service: DataServiceImpl', () => {
 
     it('#saveMemberStatus should post the member\'s status data', () => {
         setupConnection(mockBackend, environment.postgrestUrl + '/status', RequestMethod.Post);
-        service.saveMemberStatus(buildMember(), '2017-12-14').then(b => { expect(b).toBeTruthy() }).catch(r => { fail(r); });
+        service.saveMemberStatus(buildMember(), '2017-12-14').then(b => { expect(b).toBeTruthy(); }).catch(r => { fail(r); });
         expect(receivedPayload.gueltig_ab).toBe('2017-12-14');
         expect(receivedPayload.id).toBe(42);
-        expect(receivedPayload.status).toBe('berufstätig');
+        expect(receivedPayload.status).toBe('berufstï¿½tig');
         expect(receivedPayload.strasse).toBeUndefined();
         expect(receivedPayload.dfvnummer).toBeUndefined();
     });

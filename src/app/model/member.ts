@@ -1,4 +1,4 @@
-import { MemberOverview } from './member-overview'
+import { MemberOverview } from './member-overview';
 
 export interface Member extends MemberOverview {
     eintrittsdatum: string;

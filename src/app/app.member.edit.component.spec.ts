@@ -1,20 +1,20 @@
-import { ComponentFixture, TestBed, getTestBed } from '@angular/core/testing'
-import { FormsModule } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable'
-import { MemberEditComponent } from './app.member.edit.component'
-import { DataService } from './data.service'
+import { ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { MemberEditComponent } from './app.member.edit.component';
+import { DataService } from './data.service';
 
 describe('MemberEditComponent', () => {
 
-    var component: MemberEditComponent;
+    let component: MemberEditComponent;
     const mockedRouter = {
         navigate: function(args: any) { }
     },
         mockedActRoute = {
             paramMap: ArrayObservable.of({
 
-                get: function(name: string): string { return '42' }
+                get: function(name: string): string { return '42'; }
             })
         },
         mockedData = {
@@ -54,7 +54,7 @@ describe('MemberEditComponent', () => {
         spyOn(mockedData, 'getMemberDetails').and.returnValue({
             then: function(fn: (any) => void) {
                 fn({
-                    id: '42',
+                    id: 42,
                     vorname: 'Test',
                     name: 'Person',
                     dse: true,
@@ -64,7 +64,7 @@ describe('MemberEditComponent', () => {
                     mobil: '1234/56789',
                     geburtsdatum: '1980-07-06',
                     status: 'passiv',
-                    geschlecht: 'männlich',
+                    geschlecht: 'mï¿½nnlich',
                     eintrittsdatum: '2007-8-9'
                 });
             }
@@ -88,7 +88,7 @@ describe('MemberEditComponent', () => {
         setupAndInitialize();
         expect(component.member).toBeDefined();
         expect(mockedData.getMemberDetails).toHaveBeenCalledWith('42');
-        expect(component.member.id).toBe('42');
+        expect(component.member.id).toBe(42);
         expect(component.member.dse).toBe(true);
         expect(component.member.name).toBe('Person');
     });
@@ -96,7 +96,7 @@ describe('MemberEditComponent', () => {
     it('component status changed', () => {
         setupAndInitialize();
         expect(component.saveRequired).toBeFalsy();
-        component.member.status = 'ermäßigt';
+        component.member.status = 'ermï¿½ï¿½igt';
         expect(component.saveRequired).toBeTruthy();
     });
 
@@ -124,13 +124,13 @@ describe('MemberEditComponent', () => {
         component.revert();
         expect(component.member.dse).toBe(true);
         expect(component.member.eintrittsdatum).toBe('2007-8-9');
-        expect(component.member.geschlecht).toBe('männlich');
+        expect(component.member.geschlecht).toBe('mï¿½nnlich');
     });
 
     it('save - no changes', () => {
         spyOn(mockedRouter, 'navigate').and.callThrough();
         setupAndInitialize();
-        const saveDate: string = '2017-12-22';
+        const saveDate = '2017-12-22';
         component.save(saveDate);
         expect(mockedData.saveMemberDfv).not.toHaveBeenCalled();
         expect(mockedData.saveMemberContact).not.toHaveBeenCalled();
@@ -141,8 +141,8 @@ describe('MemberEditComponent', () => {
     it('save- status changed', () => {
         spyOn(mockedRouter, 'navigate').and.callThrough();
         setupAndInitialize();
-        const saveDate: string = '2017-12-22';
-        component.member.status = 'berufstätig';
+        const saveDate = '2017-12-22';
+        component.member.status = 'berufstï¿½tig';
         component.save(saveDate);
         expect(mockedData.saveMemberStatus).toHaveBeenCalledWith(jasmine.anything(), saveDate);
         expect(mockedData.saveMemberDfv).not.toHaveBeenCalled();
@@ -153,7 +153,7 @@ describe('MemberEditComponent', () => {
     it('save - contact changed', () => {
         spyOn(mockedRouter, 'navigate').and.callThrough();
         setupAndInitialize();
-        const saveDate: string = '2017-12-22';
+        const saveDate = '2017-12-22';
         component.member.email = 'ganz@anders.org';
         component.save(saveDate);
         expect(mockedData.saveMemberStatus).not.toHaveBeenCalled();
@@ -165,7 +165,7 @@ describe('MemberEditComponent', () => {
     it('save - dfv changed', () => {
         spyOn(mockedRouter, 'navigate').and.callThrough();
         setupAndInitialize();
-        const saveDate: string = '2017-12-22';
+        const saveDate = '2017-12-22';
         component.member.dfvnummer = 65432;
         component.save(saveDate);
         expect(mockedData.saveMemberStatus).not.toHaveBeenCalled();

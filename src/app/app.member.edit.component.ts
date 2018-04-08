@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
-import { DataService } from './data.service'
-import { ActivatedRoute, Router } from '@angular/router'
-import { Member } from './model/member'
-import { Subscription } from 'rxjs/Subscription'
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DataService } from './data.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Member } from './model/member';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-member-edit',
     templateUrl: './app.member.edit.component.html'
 })
-export class MemberEditComponent implements OnInit {
+export class MemberEditComponent implements OnInit, OnDestroy {
 
     private originalMember: Member;
     private subscription: Subscription;
@@ -36,7 +36,7 @@ export class MemberEditComponent implements OnInit {
     }
 
     revert(): void {
-        for (var propKey in this.originalMember) {
+        for (const propKey of Object.keys(this.originalMember)) {
             this.member[propKey] = this.originalMember[propKey];
         }
     }
@@ -48,7 +48,7 @@ export class MemberEditComponent implements OnInit {
     }
 
     save(changeDate: string): void {
-        var changed: boolean = false;
+        let changed = false;
         if (this.hasStatusChanged()) {
             // save changed status
             this.data.saveMemberStatus(this.member, changeDate).then(b => {

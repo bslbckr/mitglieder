@@ -15,7 +15,7 @@ export class DataServiceImpl extends DataService {
             environment.postgrestUrl + '/akt_mitglieder?select=id,vorname,name,geschlecht,status,email')
             .toPromise()
             .then(resp => {
-                return Promise.resolve(resp.json() as MemberOverview[]);
+                return Promise.resolve(resp.json() as MemberOverview[])
             });
 
     }
@@ -25,28 +25,26 @@ export class DataServiceImpl extends DataService {
             environment.postgrestUrl + '/akt_mitglieder?id=eq.' + id)
             .toPromise()
             .then(resp => {
-                const result = resp.json();
-                if (result && result.length === 1) {
+                var result = resp.json();
+                if (result && result.length == 1) {
                     return Promise.resolve(result[0] as Member);
                 } else {
                     let message: string;
-                    message = !result || result.length === 0 ?
-                        'did not receive any data' :
-                        'result was ambiguous, returned array contained more than one entry';
+                    message = !result || result.length == 0 ? 'did not receive any data' : 'result was ambiguous, returned array contained more than one entry';
                     return Promise.reject(message);
                 }
             });
     }
 
     sendMemberUpdateMails(members: Member[]): Promise<string[]> {
-        const mailJetUrl = environment.mailjetEndpoint;
-        let payload: any = {
+        var mailJetUrl = environment.mailjetEndpoint;
+        var payload: any = {
             Messages: [],
             SandboxMode: true
         };
-        const result: string[] = [];
+        var result: string[] = [];
         if (members) {
-            let count = 0;
+            var count: number = 0;
             members.forEach(
                 (mem, index, ar) => {
                     count++;
@@ -75,7 +73,7 @@ export class DataServiceImpl extends DataService {
             rabatt: changeMember.rabatt,
             gueltig_ab: refDate
         };
-        const updateUrl = `${environment.postgrestUrl}/dfv`;
+        const updateUrl: string = `${environment.postgrestUrl}/dfv`;
         return this.postJsonToURL(insertedRow, updateUrl);
     }
 
@@ -91,7 +89,7 @@ export class DataServiceImpl extends DataService {
             verteiler: changedMember.verteiler,
             gueltig_ab: refDate
         };
-        const updateurl = `${environment.postgrestUrl}/kontaktdaten`;
+        const updateurl: string = `${environment.postgrestUrl}/kontaktdaten`;
         return this.postJsonToURL(insertedRow, updateurl);
     }
 
@@ -101,16 +99,16 @@ export class DataServiceImpl extends DataService {
             status: changedMember.status,
             gueltig_ab: refDate
         };
-        const updateUrl = `${environment.postgrestUrl}/status`;
+        const updateUrl: string = `${environment.postgrestUrl}/status`;
         return this.postJsonToURL(insertedRow, updateUrl);
     }
 
     private postJsonToURL(payload: DFVRow | StatusRow | ContactRow, url: string): Promise<boolean> {
-        const headers: Headers = new Headers();
+        var headers: Headers = new Headers();
         headers.append('Content-type', 'application/json');
         return this.http.post(url, payload, { headers: headers })
             .toPromise().then(res => {
-                let result = false;
+                var result: boolean = false;
                 if (res.status >= 200 &&
                     res.status < 300) {
                     result = true;
@@ -120,7 +118,7 @@ export class DataServiceImpl extends DataService {
     }
 
     private createMailjetMessage(m: Member, templateId: number = 260084): MailjetMessage {
-        const result: MailjetMessage = {
+        var result: MailjetMessage = {
             TemplateId: templateId,
             From: { Email: 'frisbee@goldfingers-potsdam.de', Name: 'GUC Mitgliederverwaltung' },
             To: [{
@@ -131,30 +129,30 @@ export class DataServiceImpl extends DataService {
             TemplateLanguage: true,
             Variables: {},
             TemplateErrorReporting: {
-                Email: 'kaffeetrinker@gmail.com',
-                Name: 'Basil'
+                Email: "kaffeetrinker@gmail.com",
+                Name: "Basil"
             }
         };
         result.Subject = 'Abgleich Mitgliedsdaten';
-        result.Variables['vorname'] = m.vorname;
-        result.Variables['name'] = m.name;
-        result.Variables['geburtsdatum'] = (new Date(m.geburtsdatum)).toLocaleDateString('de-DE');
-        result.Variables['strasse'] = m.strasse;
-        result.Variables['plz'] = m.plz;
-        result.Variables['ort'] = m.ort;
-        result.Variables['email'] = m.email;
-        result.Variables['festnetz'] = m.festnetz;
-        result.Variables['mobil'] = m.mobil;
-        result.Variables['dfvnummer'] = m.dfvnummer;
-        result.Variables['dse'] = m.dse ? 'liegt vor' : 'fehlt';
-        result.Variables['rabatt'] = m.rabatt ? 'eingewilligt' : 'nicht gew&uuml;nscht';
-        result.Variables['status'] = m.status;
+        result.Variables["vorname"] = m.vorname;
+        result.Variables["name"] = m.name;
+        result.Variables["geburtsdatum"] = (new Date(m.geburtsdatum)).toLocaleDateString('de-DE');
+        result.Variables["strasse"] = m.strasse;
+        result.Variables["plz"] = m.plz;
+        result.Variables["ort"] = m.ort;
+        result.Variables["email"] = m.email;
+        result.Variables["festnetz"] = m.festnetz;
+        result.Variables["mobil"] = m.mobil;
+        result.Variables["dfvnummer"] = m.dfvnummer;
+        result.Variables["dse"] = m.dse ? 'liegt vor' : 'fehlt';
+        result.Variables["rabatt"] = m.rabatt ? 'eingewilligt' : 'nicht gew&uuml;nscht';
+        result.Variables["status"] = m.status;
         result.TemplateId = templateId;
         return result;
     }
 
     getMembersAtDate(refDate: Date): Promise<Member[]> {
-        const contentType: Headers = new Headers();
+        var contentType: Headers = new Headers();
         contentType.append('Content-type', 'application/json');
         return this.http.post(environment.postgrestUrl + '/rpc/func_member_at_date',
             JSON.stringify({ ref_date: refDate }),

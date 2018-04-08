@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core'
-import { DataService } from './data.service'
-import { MemberService } from './app.member.service'
-import { Member } from './model/member'
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './data.service';
+import { MemberService } from './app.member.service';
+import { Member } from './model/member';
 @Component({
     selector: 'app-lsb',
     templateUrl: './lsb.component.html'

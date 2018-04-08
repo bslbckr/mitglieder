@@ -1,33 +1,8 @@
-import { Injectable } from '@angular/core'
-import { Member } from './model/member'
-
-@Injectable()
-export class MemberService {
-
-    reduceMembersLSB(inputMembers: Member[]): { year: number, women: number, total: number }[] {
-        var result: { year: number, women: number, total: number }[] = [];
-        if (inputMembers && inputMembers.length > 0) {
-            var reduced: ReducedMember[] = [];
-            inputMembers.forEach(mem => {
-                reduced.push({
-                    sex: mem.geschlecht,
-                    year: (new Date(mem.geburtsdatum)).getFullYear()
-                });
-            });
-            reduced.sort((a: ReducedMember, b: ReducedMember) => { return a.year - b.year });
-            var redux: MemberReducer = new MemberReducer();
-            var tmpResult: Accumulator = reduced.reduce(redux.reduce.bind(redux), { current: null, result: [] });
-            if (tmpResult.current) {
-                tmpResult.result.push(tmpResult.current);
-            }
-            result = tmpResult.result;
-        }
-        return result;
-    }
-}
+import { Injectable } from '@angular/core';
+import { Member } from './model/member';
 
 interface ReducedMember {
-    year: number,
+    year: number;
     sex: string;
 }
 
@@ -65,5 +40,30 @@ class MemberReducer {
             }
         }
         return initial;
+    }
+}
+
+@Injectable()
+export class MemberService {
+
+    reduceMembersLSB(inputMembers: Member[]): { year: number, women: number, total: number }[] {
+        let result: { year: number, women: number, total: number }[] = [];
+        if (inputMembers && inputMembers.length > 0) {
+            const reduced: ReducedMember[] = [];
+            inputMembers.forEach(mem => {
+                reduced.push({
+                    sex: mem.geschlecht,
+                    year: (new Date(mem.geburtsdatum)).getFullYear()
+                });
+            });
+            reduced.sort((a: ReducedMember, b: ReducedMember) => a.year - b.year);
+            const redux: MemberReducer = new MemberReducer();
+            const tmpResult: Accumulator = reduced.reduce(redux.reduce.bind(redux), { current: null, result: [] });
+            if (tmpResult.current) {
+                tmpResult.result.push(tmpResult.current);
+            }
+            result = tmpResult.result;
+        }
+        return result;
     }
 }

@@ -7,8 +7,8 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular/cli'],
     plugins: [
       require('karma-jasmine'),
-        //require('karma-chrome-launcher'),
-        require('karma-firefox-launcher'),
+      // require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular/cli/plugins/karma')
@@ -23,12 +23,21 @@ module.exports = function (config) {
     angularCli: {
       environment: 'dev'
     },
+    preprocessors: {
+      './src/test.ts': ['@angular/cli']
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Firefox'],
-    singleRun: false
+    singleRun: false,
+    customLaunchers: {
+      'ff_headless': {
+        base: 'Firefox',
+        flags: ['-headless']
+      }
+    }
   });
 };

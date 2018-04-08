@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core'
-import { MemberOverview } from './model/member-overview'
-import { Member } from './model/member'
+import { Injectable } from '@angular/core';
+import { MemberOverview } from './model/member-overview';
+import { Member } from './model/member';
 
 @Injectable()
 export abstract class DataService {

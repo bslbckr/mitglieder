@@ -1,15 +1,15 @@
-import { fakeAsync, getTestBed, TestBed, tick, ComponentFixture } from '@angular/core/testing'
-import { MemberDetailComponent } from './app.member.detail.component'
-import { ActivatedRoute } from '@angular/router'
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable'
-import { DataService } from './data.service'
-import { Member } from './model/member'
+import { fakeAsync, getTestBed, TestBed, tick, ComponentFixture } from '@angular/core/testing';
+import { MemberDetailComponent } from './app.member.detail.component';
+import { ActivatedRoute } from '@angular/router';
+import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { DataService } from './data.service';
+import { Member } from './model/member';
 
 describe('Test MemberDetailComponent', () => {
-    var component: MemberDetailComponent;
-    var data = {
+    let component: MemberDetailComponent;
+    const data = {
         getMemberDetails(id: string): Promise<Member> {
-            return null
+            return Promise.reject('test');
         }
     };
 
@@ -86,7 +86,7 @@ describe('Test MemberDetailComponent', () => {
                     .toBe('Detailansicht Test Person');
                 expect(nativeElement.querySelector('div.btn-group')
                     .childElementCount).toBe(2);
-                //2nd button in button-group is the edit-button
+                // 2nd button in button-group is the edit-button
                 expect(nativeElement
                     .querySelector('div.btn-group > a:last-child')
                     .attributes['routerLink']

@@ -8,17 +8,17 @@ import { DataServiceImpl } from './data.service.impl';
 import { MemberService } from './app.member.service';
 
 import { AppComponent } from './app.component';
-import { OverviewComponent } from './app.overview.component'
-import { MemberDetailComponent } from './app.member.detail.component'
-import { MemberEditComponent } from './app.member.edit.component'
-import { LsbComponent } from './lsb.component'
+import { OverviewComponent } from './app.overview.component';
+import { MemberDetailComponent } from './app.member.detail.component';
+import { MemberEditComponent } from './app.member.edit.component';
+import { LsbComponent } from './lsb.component';
 
 const routes: Routes = [
     { path: 'member/:id/edit', component: MemberEditComponent },
     { path: 'member/:id', component: MemberDetailComponent },
     { path: 'lsb', component: LsbComponent },
     { path: '', component: OverviewComponent }
-]
+];
 
 @NgModule({
     declarations: [
