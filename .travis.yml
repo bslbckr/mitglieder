@@ -11,7 +11,9 @@ install:
   - npm install
 script:
   - npm run build
+after_success:
   - docker build -t bslbckr/mitglieder:$TRAVIS_BRANCH .
+  
 deploy:
   provider: script
   script: bash docker_push
