@@ -1,6 +1,7 @@
 {
   "name": "mitglieder",
   "version": "0.0.0",
+  "proxy": "http://localhost:3000",
   "license": "MIT",
   "scripts": {
   "ng": "ng",
