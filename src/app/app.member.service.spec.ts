@@ -9,7 +9,7 @@ describe('test MemberService', () => {
     const mem4: Member = buildMember('2000-12-12');
     const mem5: Member = buildMember('1990-10-3', 'mï¿½nnlich');
 
-    function buildMember(dob: string, sex: string = 'weiblich'): Member {
+    function buildMember(dob: string, sex: 'männlich' | 'weiblich' = 'weiblich'): Member {
         return {
             id: 1,
             vorname: 'Test',

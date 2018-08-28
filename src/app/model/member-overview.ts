@@ -1,9 +1,9 @@
 export interface MemberOverview {
-    id: number;
+    id?: number;
     vorname: string;
     name: string;
-    geschlecht: string;
-    status: string;
+    geschlecht: 'm‰nnlich' | 'weiblich';
+    status: 'passiv' | 'erm‰ﬂigt' | 'berufst‰tig';
     geburtsdatum: string;
-    email: string;
+    email?: string;
 }
