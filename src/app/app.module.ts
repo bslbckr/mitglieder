@@ -12,6 +12,7 @@ import { OverviewComponent } from './app.overview.component';
 import { MemberDetailComponent } from './app.member.detail.component';
 import { MemberEditComponent } from './app.member.edit.component';
 import { LsbComponent } from './lsb.component';
+import { AddMemberComponent } from './app.addmember.component';
 
 const routes: Routes = [
     { path: 'member/:id/edit', component: MemberEditComponent },
@@ -26,7 +27,8 @@ const routes: Routes = [
         OverviewComponent,
         MemberDetailComponent,
         MemberEditComponent,
-        LsbComponent
+        LsbComponent,
+        AddMemberComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
