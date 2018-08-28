@@ -17,4 +17,6 @@ export abstract class DataService {
     abstract saveMemberContact(changeMember: Member, refDate: string): Promise<boolean>;
 
     abstract saveMemberStatus(changedMember: Member, refDate: string): Promise<boolean>;
+
+    abstract saveMember(newMember: Member): Promise<boolean>;
 }

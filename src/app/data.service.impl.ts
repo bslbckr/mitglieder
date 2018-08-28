@@ -105,6 +105,35 @@ export class DataServiceImpl extends DataService {
         return this.postJsonToURL(insertedRow, updateUrl);
     }
 
+    saveMember(newMember: Member): Promise<boolean> {
+        const insertUrl = `${environment.postgrestUrl}/stammdaten`;
+        const insertedMember = {
+            vorname: newMember.vorname,
+            name: newMember.name,
+            geburtsdatum: newMember.geburtsdatum,
+            eintrittsdatum: newMember.eintrittsdatum,
+            geschlecht: newMember.geschlecht
+        };
+        const headers: Headers = new Headers();
+        headers.append('Content-type', 'application/json');
+        headers.append('Prefer', 'return=representation');
+        return this.http.post(insertUrl, insertedMember, { headers: headers }).toPromise().then(res => {
+            if (res.status >= 200 && res.status < 300) {
+                const stammdaten = res.json();
+                return Promise.resolve(stammdaten);
+            } else {
+                return Promise.reject('storing member failed');
+            }
+        }).then(s => {
+            newMember.id = s[0].id;
+            return Promise.all([this.saveMemberContact(newMember, newMember.eintrittsdatum),
+            this.saveMemberDfv(newMember, newMember.eintrittsdatum),
+            this.saveMemberStatus(newMember, newMember.eintrittsdatum)]).then(v => {
+                return Promise.resolve(v[0] && v[1] && v[2]);
+            })
+        });
+    }
+
     private postJsonToURL(payload: DFVRow | StatusRow | ContactRow, url: string): Promise<boolean> {
         const headers: Headers = new Headers();
         headers.append('Content-type', 'application/json');
@@ -120,6 +149,9 @@ export class DataServiceImpl extends DataService {
     }
 
     private createMailjetMessage(m: Member, templateId: number = 260084): MailjetMessage {
+        if (!m.email) {
+            throw new Error();
+        }
         const result: MailjetMessage = {
             TemplateId: templateId,
             From: { Email: 'frisbee@goldfingers-potsdam.de', Name: 'GUC Mitgliederverwaltung' },
@@ -142,10 +174,18 @@ export class DataServiceImpl extends DataService {
         result.Variables['strasse'] = m.strasse;
         result.Variables['plz'] = m.plz;
         result.Variables['ort'] = m.ort;
-        result.Variables['email'] = m.email;
-        result.Variables['festnetz'] = m.festnetz;
-        result.Variables['mobil'] = m.mobil;
-        result.Variables['dfvnummer'] = m.dfvnummer;
+        if (m.email) {
+            result.Variables['email'] = m.email;
+        }
+        if (m.festnetz) {
+            result.Variables['festnetz'] = m.festnetz;
+        }
+        if (m.mobil) {
+            result.Variables['mobil'] = m.mobil;
+        }
+        if (m.dfvnummer) {
+            result.Variables['dfvnummer'] = m.dfvnummer;
+        }
         result.Variables['dse'] = m.dse ? 'liegt vor' : 'fehlt';
         result.Variables['rabatt'] = m.rabatt ? 'eingewilligt' : 'nicht gew&uuml;nscht';
         result.Variables['status'] = m.status;
@@ -183,27 +223,27 @@ interface MailjetMessage {
 }
 
 interface DFVRow {
-    id: number;
-    dfvnummer: number;
-    dse: boolean;
-    rabatt: boolean;
+    id?: number;
+    dfvnummer?: number;
+    dse?: boolean;
+    rabatt?: boolean;
     gueltig_ab: string;
 }
 
 interface StatusRow {
-    id: number;
+    id?: number;
     status: string;
     gueltig_ab: string;
 }
 
 interface ContactRow {
-    id: number;
+    id?: number;
     strasse: string;
     plz: number;
     ort: string;
-    email: string;
-    mobil: string;
-    festnetz: string;
+    email?: string;
+    mobil?: string;
+    festnetz?: string;
     verteiler: boolean;
     gueltig_ab: string;
 }
