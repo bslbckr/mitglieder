@@ -24,7 +24,7 @@ services:
       PGRST_DB_ANON_ROLE: postgres
       PGRST_SERVER_PROXY_URI: http://example.com/exmple
   frontend:
-    image: bslbckr/mitglieder
+    image: bslbckr/mitglieder:master
     networks:
       mitglieder:
         aliases:
