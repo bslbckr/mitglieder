@@ -130,7 +130,7 @@ export class DataServiceImpl extends DataService {
             this.saveMemberDfv(newMember, newMember.eintrittsdatum),
             this.saveMemberStatus(newMember, newMember.eintrittsdatum)]).then(v => {
                 return Promise.resolve(v[0] && v[1] && v[2]);
-            })
+            });
         });
     }
 
