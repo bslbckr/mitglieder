@@ -1,60 +1,80 @@
 <ng-container *ngIf="showPopup">
-    <div class="modal-backdrop fade in">
-        <div id="add-member-popup" class="modal show" tabindx="-1" role="dialog" >
+    <div id="add-member-popup" class="modal show" tabindx="-1" role="dialog" >
+        <div class="modal-content" role="document" >
             <div class="modal-header" >
                 <button class="close" type="button" aria-hidden="true" (click)="togglePopupVisibility()">x</button>
                 <h3>Neues Mitglied</h3>
             </div>
             <div class="modal-body" >
                 <form class="form-horizontal" >
-                    <label for="inputVorname" class="col-md-2 control-label" >Vorname</label>
-                    <div class="col-md-4" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputVorname" class="control-label" >Vorname</label>
                         <input type="text" class="form-control" [(ngModel)]="newMember.vorname" id="inputVorname" name="vorname" >
                     </div>
-                    <label for="inputNachname" class="col-md-2 control-label">Nachname</label>
-                    <div class="col-md-4" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputNachname" class="col-md-4 control-label">Nachname</label>
                         <input type="text" class="form-control" [(ngModel)]="newMember.name" id="inputNachname" name="name" >
                     </div>
-                    <label for="inputGeschlecht" class="col-md-2 control-label" >Geschlecht</label>
-                    <div class="col-md-4" >
-                        <select id="inputGeschlecht" class="form-control" [(ngModel)]="newMember.geschlecht" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputGeschlecht" class="control-label" >Geschlecht</label>
+                        <select id="inputGeschlecht" class="form-control" [(ngModel)]="newMember.geschlecht" name="geschlecht">
                             <option value="weiblich">weiblich</option>
-                            <option value="m�nnlich">m�nnlich</option>
+                            <option value="männlich">männlich</option>
                         </select>
                     </div>
-                    <label for="inputBirthday" class="col-md-2 control-label">Geburtsdatum</label>
-                    <div class="col-md-4" >
-                        <input type="date" class="form-control" [(ngModel)]="newmember.geburtsdatum" id="inputBirtday" name="birthday" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputBirthday" class="control-label">Geburtsdatum</label>
+                        <input type="date" class="form-control" [(ngModel)]="newMember.geburtsdatum" id="inputBirtday" name="birthday" >
                     </div>
-                    <label for="inputStreet" class="col-md-2 control-label" >Stra&szlig;e</label>
-                    <div class="col-md-10" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputStreet" class="control-label" >Stra&szlig;e</label>
                         <input type="text" class="form-control" [(ngModel)]="newMember.strasse" id="inputStreet" name="street" >
                     </div>
-                    <label for="inputPLZ" class="col-md-2 control-label" >Postleitzahl</label>
-                    <div class="col-md-4" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputPLZ" class="control-label" >Postleitzahl</label>
                         <input type="number" id="inputPLZ" class="form-control" [(ngModel)]="newMember.plz" name="plz" >
                     </div>
-                    <label for="inputOrt" class="col-md-2 control-label" >Ort</label>
-                    <div class="col-md-4" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputOrt" class="control-label" >Ort</label>
                         <input type="text" id="inputOrt" class="form-control" [(ngModel)]="newMember.ort" name="ort" >
                     </div>
-                    <label for="inputEmail"  class="col-md-2 control-label" >E-Mail</label>
-                    <div class="col-md-4" >
-                        <input type="email" id="inputEmail" class="form-control" [(ngModel)]="newMemer.mail" name="email" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputEmail"  class="control-label" >E-Mail</label>
+                        <input type="email" id="inputEmail" class="form-control" [(ngModel)]="newMember.email" name="email" >
                     </div>
-                    <label for="inputMobile" class="col-md-2 control-label" >Mobil</label>
-                    <div class="col-md-4" >
+                    <div class="form-group col-md-6" >
+                        <label for="inputMobile" class="control-label" >Mobil</label>
                         <input tpye="phone" id="inputMobile" class="form-control" [(ngModel)]="newMember.mobil" name="mobil" >
                     </div>
-                    <label class="col-md-2 control-label" for="inputLandline" >Festnetz</label>
-                    <div class="col-md-4" >
-                        <input type="phone" id="inputLandline" class="form-control" [(ngModel)]="newMember.phone" name="phone" >
+                    <div class="form-group col-md-6" >
+                        <label class="control-label" for="inputLandline" >Festnetz</label>
+                        <input type="phone" id="inputLandline" class="form-control" [(ngModel)]="newMember.festnetz" name="phone" >
                     </div>
-                    <label class="col-md-2 control-label" for="inputVerteiler" >Verteiler?</label>
-                    <div class="col-md-4" >
-                        <input type="checkbox" id="inputVerteiler" [(ngModel)]="newMember.verteiler" name="verteiler" >
+                    <div class="form-group col-md-6" >
+                        <label class="control-label" for="inputVerteiler" >Verteiler?</label>
+                        <input type="checkbox" id="inputVerteiler" class="form-control" [(ngModel)]="newMember.verteiler" name="verteiler" >
                     </div>
-                </form>      
+                    <div class="form-group col-md-6" >
+                        <label class="control-label" for="inputStatus" >Status</label>
+                        <select id="inputStatus" class="form-control" [(ngModel)]="newMember.status" name="status">
+                            <option value="berufstätig" >berufstätig</option>
+                            <option value="ermäßigt" >ermäßigt</option>
+                            <option value="passiv">passiv</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6" >
+                        <label class="control-label" for="inputEntryDate" >Eintrittsdatum</label>
+                        <input id="inputEntryDate" type="date" class="form-control" [(ngModel)]="newMember.eintrittsdatum" name="eintrittsdatum" >
+                    </div>
+                    <div class="form-group col-md-6" >
+                        <label class="control-label" for="inputDse" >DSE</label>
+                        <input type="checkbox" id="inputDse" class="form-control" name="dse" [(ngModel)]="newMember.dse" >
+                    </div>
+                    <div class="form-group col-md-6" >
+                        <label class="control-label" for="inputRabatt" >Rabatt</label>
+                        <input type="checkbox" id="inputRabatt" class="form-control" name="rabatt" [(ngModel)]="newMember.rabatt" >
+                    </div>
+                </form>
             </div>
             <div class="modal-footer" >
                 <button type="button" class="btn" aria-hidden="true" (click)="togglePopupVisibility()" >Schlie&szlig;en</button>

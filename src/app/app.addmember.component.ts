@@ -25,7 +25,7 @@ export class AddMemberComponent {
         this.isPopupVisible = !this.isPopupVisible;
         if (this.isPopupVisible) {
             this.newMember = {
-                vorname: 'Basil',
+                vorname: '',
                 name: '',
                 eintrittsdatum: new Date().toDateString(),
                 verteiler: true,
