@@ -13,6 +13,8 @@ import { MemberDetailComponent } from './app.member.detail.component';
 import { MemberEditComponent } from './app.member.edit.component';
 import { LsbComponent } from './lsb.component';
 import { AddMemberComponent } from './app.addmember.component';
+import { ViewRefDirective } from './app.viewref.directiv';
+import { TestComponent } from './app.test.component';
 
 const routes: Routes = [
     { path: 'member/:id/edit', component: MemberEditComponent },
@@ -28,8 +30,11 @@ const routes: Routes = [
         MemberDetailComponent,
         MemberEditComponent,
         LsbComponent,
-        AddMemberComponent
+        AddMemberComponent,
+        ViewRefDirective,
+        TestComponent
     ],
+    entryComponents: [TestComponent],
     imports: [
         RouterModule.forRoot(routes),
         BrowserModule,
