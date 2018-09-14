@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { DataService } from './data.service';
 import { DataServiceImpl } from './data.service.impl';
 import { MemberService } from './app.member.service';
-
+import { FilterModule } from './filter/FilterModule';
+import { FilterTestComponent } from './app.filtertest.component';
 import { AppComponent } from './app.component';
 import { OverviewComponent } from './app.overview.component';
 import { MemberDetailComponent } from './app.member.detail.component';
@@ -14,7 +15,6 @@ import { MemberEditComponent } from './app.member.edit.component';
 import { LsbComponent } from './lsb.component';
 import { AddMemberComponent } from './app.addmember.component';
 import { ViewRefDirective } from './app.viewref.directiv';
-import { TestComponent } from './app.test.component';
 
 const routes: Routes = [
     { path: 'member/:id/edit', component: MemberEditComponent },
@@ -32,13 +32,13 @@ const routes: Routes = [
         LsbComponent,
         AddMemberComponent,
         ViewRefDirective,
-        TestComponent
+        AddMemberComponent
     ],
-    entryComponents: [TestComponent],
     imports: [
         RouterModule.forRoot(routes),
         BrowserModule,
         FormsModule,
+        FilterModule,
         HttpModule
     ],
     providers: [{ provide: DataService, useClass: DataServiceImpl }, MemberService],

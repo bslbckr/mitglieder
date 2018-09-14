@@ -1,11 +1,12 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { DataService } from './data.service';
 import { MemberOverview } from './model/member-overview';
 import { ComponentService } from './app.component.service';
 import { ComponentServiceImpl } from './app.component.service.impl';
-import { TestComponent } from './app.test.component';
 import { ViewContainerRef } from '@angular/core/src/linker/view_container_ref';
+import { AbstractFilterDescriptor } from './filter/AbstractFilterDescriptor';
+import { injectionToken } from './filter/Filter';
 
 @Component({
     selector: 'app-overview',
@@ -17,9 +18,9 @@ export class OverviewComponent implements OnInit {
     messagePayload: string[];
     private unsanitizedDownloadUrl = '';
 
-    constructor(private data: DataService, private sanitizer: DomSanitizer, resolver: ComponentFactoryResolver, cs: ComponentService) {
+    constructor(private data: DataService, private sanitizer: DomSanitizer, @Inject(injectionToken) private descriptors: AbstractFilterDescriptor<{}>[], private cs: ComponentService) {
         cs.containerListener((ref: ViewContainerRef) => {
-            var fac = resolver.resolveComponentFactory(TestComponent);
+            var fac = descriptors[0].ProvideComponentFactory();
             ref.createComponent(fac);
         });
 
