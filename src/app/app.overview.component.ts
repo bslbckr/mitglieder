@@ -4,6 +4,8 @@ import { DataService } from './data.service';
 import { MemberOverview } from './model/member-overview';
 import { ComponentService } from './app.component.service';
 import { ComponentServiceImpl } from './app.component.service.impl';
+import { FilterService } from "./app.filter.service";
+import { FilterServiceImpl } from "./app.filter.service.impl";
 import { ViewContainerRef } from '@angular/core/src/linker/view_container_ref';
 import { AbstractFilterDescriptor } from './filter/AbstractFilterDescriptor';
 import { injectionToken } from './filter/Filter';
@@ -11,7 +13,8 @@ import { injectionToken } from './filter/Filter';
 @Component({
     selector: 'app-overview',
     templateUrl: './app.overview.component.html',
-    providers: [{ provide: ComponentService, useClass: ComponentServiceImpl }]
+    providers: [{ provide: ComponentService, useClass: ComponentServiceImpl },
+    { provide: FilterService, useClass: FilterServiceImpl }]
 })
 export class OverviewComponent implements OnInit {
     members: MemberOverview[];
@@ -20,8 +23,7 @@ export class OverviewComponent implements OnInit {
 
     constructor(private data: DataService, private sanitizer: DomSanitizer, @Inject(injectionToken) private descriptors: AbstractFilterDescriptor<{}>[], private cs: ComponentService) {
         cs.containerListener((ref: ViewContainerRef) => {
-            var fac = descriptors[0].ProvideComponentFactory();
-            ref.createComponent(fac);
+            descriptors.map(d => d.ProvideComponentFactory()).forEach(fac => ref.createComponent(fac));
         });
 
     }
