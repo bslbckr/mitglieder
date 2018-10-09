@@ -5,6 +5,11 @@ import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
 import { DataService } from './data.service';
 import { Member } from './model/member';
 
+interface ParameterMap {
+    get(name: string): string;
+    has(name: string): boolean;
+}
+
 describe('Test MemberDetailComponent', () => {
     let component: MemberDetailComponent;
     const data = {
@@ -21,10 +26,10 @@ describe('Test MemberDetailComponent', () => {
             {
                 provide: ActivatedRoute,
                 useValue: {
-                    paramMap: ArrayObservable.of({
+                    paramMap: ArrayObservable.create<ParameterMap>([{
                         get(name: string): string { return '42'; },
                         has(name: string): boolean { return true; }
-                    })
+                    }])
                 }
             }],
             declarations: [MemberDetailComponent]

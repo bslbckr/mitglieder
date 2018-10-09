@@ -5,6 +5,10 @@ import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
 import { MemberEditComponent } from './app.member.edit.component';
 import { DataService } from './data.service';
 
+interface ParameterMap {
+    get(n: string): string;
+}
+
 describe('MemberEditComponent', () => {
 
     let component: MemberEditComponent;
@@ -12,10 +16,10 @@ describe('MemberEditComponent', () => {
         navigate: function(args: any) { }
     },
         mockedActRoute = {
-            paramMap: ArrayObservable.of({
+            paramMap: ArrayObservable.create<ParameterMap>([{
 
                 get: function(name: string): string { return '42'; }
-            })
+            }])
         },
         mockedData = {
             getMemberDetails: function() { },
