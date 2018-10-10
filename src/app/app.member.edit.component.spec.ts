@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, getTestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { of } from 'rxjs';
 import { MemberEditComponent } from './app.member.edit.component';
 import { DataService } from './data.service';
 
@@ -16,10 +16,10 @@ describe('MemberEditComponent', () => {
         navigate: function(args: any) { }
     },
         mockedActRoute = {
-            paramMap: ArrayObservable.create<ParameterMap>([{
+            paramMap: of<ParameterMap>({
 
                 get: function(name: string): string { return '42'; }
-            }])
+            })
         },
         mockedData = {
             getMemberDetails: function() { },
