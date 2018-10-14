@@ -1,9 +1,14 @@
 import { fakeAsync, getTestBed, TestBed, tick, ComponentFixture } from '@angular/core/testing';
 import { MemberDetailComponent } from './app.member.detail.component';
 import { ActivatedRoute } from '@angular/router';
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { of } from 'rxjs';
 import { DataService } from './data.service';
 import { Member } from './model/member';
+
+interface ParameterMap {
+    get(name: string): string;
+    has(name: string): boolean;
+}
 
 describe('Test MemberDetailComponent', () => {
     let component: MemberDetailComponent;
@@ -21,7 +26,7 @@ describe('Test MemberDetailComponent', () => {
             {
                 provide: ActivatedRoute,
                 useValue: {
-                    paramMap: ArrayObservable.of({
+                    paramMap: of<ParameterMap>({
                         get(name: string): string { return '42'; },
                         has(name: string): boolean { return true; }
                     })

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Member } from './model/member';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-member-edit',
