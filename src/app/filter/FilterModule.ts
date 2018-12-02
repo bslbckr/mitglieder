@@ -2,7 +2,7 @@ import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { injectionToken } from './Filter';
 import { GenderFilterDescriptor } from './GenderFilterDescriptor';
-import { GenderFilter } from './GenderFilter';
+import { GenderFilterComponent } from './GenderFilter';
 import { StateFilterDescriptor } from './StateFilterDescriptor';
 import { StateFilterComponent } from './StateFilterComponent';
 import { AgeFilterComponent } from './AgeFilterComponent';
@@ -10,7 +10,7 @@ import { AgeFilterDescriptor } from './AgeFilterDescriptor';
 import { TextFilterComponent } from './TextFilterComponent';
 import { TextFilterDescriptor } from './TextFilterDescriptor';
 
-const components: any[] = [GenderFilter, StateFilterComponent, AgeFilterComponent, TextFilterComponent];
+const components: any[] = [GenderFilterComponent, StateFilterComponent, AgeFilterComponent, TextFilterComponent];
 
 @NgModule({
     imports: [CommonModule],

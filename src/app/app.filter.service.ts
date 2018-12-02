@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { MemberOverview } from "./model/member-overview";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { MemberOverview } from './model/member-overview';
+import { Observable } from 'rxjs';
 
 export type FilterFunc = (m: MemberOverview) => boolean;
 export const noopFilter: FilterFunc = (m) => true;

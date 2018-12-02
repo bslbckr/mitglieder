@@ -1,11 +1,11 @@
-import { Component, ComponentFactoryResolver, Inject, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { DataService } from './data.service';
 import { MemberOverview } from './model/member-overview';
 import { ComponentService } from './app.component.service';
 import { ComponentServiceImpl } from './app.component.service.impl';
-import { FilterService } from "./app.filter.service";
-import { FilterServiceImpl } from "./app.filter.service.impl";
+import { FilterService } from './app.filter.service';
+import { FilterServiceImpl } from './app.filter.service.impl';
 import { ViewContainerRef } from '@angular/core/src/linker/view_container_ref';
 import { AbstractFilterDescriptor } from './filter/AbstractFilterDescriptor';
 import { injectionToken } from './filter/Filter';
@@ -17,14 +17,16 @@ import { Subscription } from 'rxjs';
     providers: [{ provide: ComponentService, useClass: ComponentServiceImpl },
     { provide: FilterService, useClass: FilterServiceImpl }]
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit, OnDestroy {
     members: MemberOverview[];
     messagePayload: string[];
     private unsanitizedDownloadUrl = '';
     private filterSub: Subscription;
     private unfilteredMembers: MemberOverview[];
 
-    constructor(private data: DataService, private sanitizer: DomSanitizer, @Inject(injectionToken) private descriptors: AbstractFilterDescriptor<{}>[], private cs: ComponentService, private filterSrv: FilterService) {
+    constructor(private data: DataService, private sanitizer: DomSanitizer,
+        @Inject(injectionToken) private descriptors: AbstractFilterDescriptor<{}>[],
+        private cs: ComponentService, private filterSrv: FilterService) {
         cs.containerListener((ref: ViewContainerRef) => {
             descriptors.map(d => d.ProvideComponentFactory()).forEach(fac => ref.createComponent(fac));
         });

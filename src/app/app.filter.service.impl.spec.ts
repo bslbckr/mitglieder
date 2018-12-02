@@ -1,8 +1,8 @@
-import { Member } from "./model/member";
-import { FilterServiceImpl } from "./app.filter.service.impl";
-import { FilterFunc } from "./app.filter.service";
+import { Member } from './model/member';
+import { FilterServiceImpl } from './app.filter.service.impl';
+import { FilterFunc } from './app.filter.service';
 
-describe("Service: FilterServiceImpl", () => {
+describe('Service: FilterServiceImpl', () => {
     const memberInput: Member[] = [
         {
             id: 42,
@@ -10,8 +10,8 @@ describe("Service: FilterServiceImpl", () => {
             vorname: 'James',
             geburtsdatum: '1970-1-2',
             eintrittsdatum: '2017-5-1',
-            geschlecht: 'mï¿½nnlich',
-            status: 'berufstï¿½tig',
+            geschlecht: 'männlich',
+            status: 'berufstätig',
             dfvnummer: 123456,
             dse: true,
             rabatt: false,
@@ -28,14 +28,14 @@ describe("Service: FilterServiceImpl", () => {
     let service: FilterServiceImpl;
 
     beforeEach(() => { service = new FilterServiceImpl(); });
-    it("the result should not be changed if no filter is set", () => {
+    it('the result should not be changed if no filter is set', () => {
         const result = service.filter(memberInput);
         expect(result).toBe(memberInput);
     });
 
-    it("the all-false filter should remove any entry from the input-array", () => {
+    it('the all-false filter should remove any entry from the input-array', () => {
         const allFalse: FilterFunc = (i: Member) => false;
-        service.registerFilter("allFalse", allFalse);
+        service.registerFilter('allFalse', allFalse);
         const result = service.filter(memberInput);
         expect(result).not.toBeNaN();
         expect(result.length).toBe(0);

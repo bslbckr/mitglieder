@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
-import { FilterService, noopFilter } from "../app.filter.service";
+import { Component } from '@angular/core';
+import { FilterService, noopFilter } from '../app.filter.service';
 
 @Component({
-    selector: 'text-filter',
+    selector: 'app-text-filter',
     templateUrl: './TextFilterComponent.html'
 })
 export class TextFilterComponent {
@@ -16,7 +16,8 @@ export class TextFilterComponent {
             const filterValue = target.value;
             let func = noopFilter;
             if (filterValue && filterValue.length > 0) {
-                func = (m) => (m.vorname && (m.vorname.indexOf(filterValue) > -1)) || (m.name && (m.name.indexOf(filterValue) > -1)) || false;
+                func = (m) => (m.vorname && (m.vorname.indexOf(filterValue) > -1))
+                    || (m.name && (m.name.indexOf(filterValue) > -1)) || false;
             }
             this.filterSrv.registerFilter(TextFilterComponent.filterName, func);
         }

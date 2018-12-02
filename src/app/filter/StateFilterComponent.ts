@@ -8,7 +8,7 @@ import { FilterService, FilterFunc, noopFilter } from '../app.filter.service';
 })
 export class StateFilterComponent {
     private static readonly filterName: string = 'StateFilter';
-    filterValue: string = 'Alle';
+
     constructor(private filterServe: FilterService) { }
 
     public onSelect(event: Event): void {

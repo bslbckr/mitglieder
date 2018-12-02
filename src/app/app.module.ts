@@ -7,7 +7,6 @@ import { DataService } from './data.service';
 import { DataServiceImpl } from './data.service.impl';
 import { MemberService } from './app.member.service';
 import { FilterModule } from './filter/FilterModule';
-import { FilterTestComponent } from './app.filtertest.component';
 import { AppComponent } from './app.component';
 import { OverviewComponent } from './app.overview.component';
 import { MemberDetailComponent } from './app.member.detail.component';

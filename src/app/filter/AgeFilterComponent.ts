@@ -3,7 +3,7 @@ import { FilterService, FilterFunc, noopFilter } from '../app.filter.service';
 
 @Component({
     templateUrl: './AgeFilterComponent.html',
-    selector: 'age-filter'
+    selector: 'app-age-filter'
 })
 export class AgeFilterComponent {
     private static readonly filterName = 'ageFilter';
@@ -13,7 +13,7 @@ export class AgeFilterComponent {
         if (event && event.target) {
             const target = event.target as HTMLInputElement;
             const filterValue = target.value;
-            var func: FilterFunc;
+            let func: FilterFunc;
             if (filterValue === 'Alle') {
                 func = noopFilter;
             } else {
