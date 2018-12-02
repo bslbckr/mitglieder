@@ -12,7 +12,7 @@ export class DataServiceImpl extends DataService {
 
     getMembers(): Promise<MemberOverview[]> {
         return this.http.get(
-            environment.postgrestUrl + '/akt_mitglieder?select=id,vorname,name,geschlecht,status,email')
+            environment.postgrestUrl + '/akt_mitglieder?select=id,vorname,name,geschlecht,status,email,geburtsdatum')
             .toPromise()
             .then(resp => {
                 return Promise.resolve(resp.json() as MemberOverview[]);
