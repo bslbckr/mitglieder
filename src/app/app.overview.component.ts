@@ -9,6 +9,7 @@ import { FilterServiceImpl } from "./app.filter.service.impl";
 import { ViewContainerRef } from '@angular/core/src/linker/view_container_ref';
 import { AbstractFilterDescriptor } from './filter/AbstractFilterDescriptor';
 import { injectionToken } from './filter/Filter';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-overview',
@@ -20,8 +21,10 @@ export class OverviewComponent implements OnInit {
     members: MemberOverview[];
     messagePayload: string[];
     private unsanitizedDownloadUrl = '';
+    private filterSub: Subscription;
+    private unfilteredMembers: MemberOverview[];
 
-    constructor(private data: DataService, private sanitizer: DomSanitizer, @Inject(injectionToken) private descriptors: AbstractFilterDescriptor<{}>[], private cs: ComponentService) {
+    constructor(private data: DataService, private sanitizer: DomSanitizer, @Inject(injectionToken) private descriptors: AbstractFilterDescriptor<{}>[], private cs: ComponentService, private filterSrv: FilterService) {
         cs.containerListener((ref: ViewContainerRef) => {
             descriptors.map(d => d.ProvideComponentFactory()).forEach(fac => ref.createComponent(fac));
         });
@@ -31,6 +34,8 @@ export class OverviewComponent implements OnInit {
     ngOnInit(): void {
         this.data.getMembers().then(mo => {
             this.members = mo;
+            this.unfilteredMembers = mo;
+
             if (this.members) {
                 const tmpArr: string[] = ['Vorname,Name,E-Mail,Status'];
                 this.members.forEach(m => {
@@ -40,6 +45,16 @@ export class OverviewComponent implements OnInit {
                 this.unsanitizedDownloadUrl = URL.createObjectURL(blob);
             }
         });
+
+        this.filterSub = this.filterSrv
+            .onFilterChanged.subscribe((filterName: string) => {
+                this.members = this.filterSrv.filter(this.unfilteredMembers);
+            });
+
+    }
+
+    public ngOnDestroy(): void {
+        this.filterSub.unsubscribe();
     }
 
     get downloadUrl(): string | SafeUrl {
