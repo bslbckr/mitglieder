@@ -15,7 +15,7 @@ export class LsbComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.data.getMembersAtDate(new Date('2018-01-01')).then(this.callMemberService.bind(this));
+        this.data.getMembersAtDate(new Date('2019-01-01')).then(this.callMemberService.bind(this));
     }
 
     private callMemberService(members: Member[]): void {
