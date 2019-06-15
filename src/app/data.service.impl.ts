@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from './data.service';
 import { MemberOverview } from './model/member-overview';
 import { Member } from './model/member';
@@ -8,26 +8,22 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class DataServiceImpl extends DataService {
 
-    constructor(private http: Http) { super(); }
+    constructor(private http: HttpClient) { super(); }
 
     getMembers(): Promise<MemberOverview[]> {
-        return this.http.get(
+        return this.http.get<MemberOverview[]>(
             environment.postgrestUrl + '/akt_mitglieder?select=id,vorname,name,geschlecht,status,email,geburtsdatum')
-            .toPromise()
-            .then(resp => {
-                return Promise.resolve(resp.json() as MemberOverview[]);
-            });
+            .toPromise();
 
     }
 
     getMemberDetails(id: string): Promise<Member> {
-        return this.http.get(
+        return this.http.get<Member[]>(
             environment.postgrestUrl + '/akt_mitglieder?id=eq.' + id)
             .toPromise()
-            .then(resp => {
-                const result = resp.json();
+            .then(result => {
                 if (result && result.length === 1) {
-                    return Promise.resolve(result[0] as Member);
+                    return Promise.resolve(result[0]);
                 } else {
                     let message: string;
                     message = !result || result.length === 0 ?
@@ -114,37 +110,38 @@ export class DataServiceImpl extends DataService {
             eintrittsdatum: newMember.eintrittsdatum,
             geschlecht: newMember.geschlecht
         };
-        const headers: Headers = new Headers();
+        const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-type', 'application/json');
         headers.append('Prefer', 'return=representation');
-        return this.http.post(insertUrl, insertedMember, { headers: headers }).toPromise().then(res => {
-            if (res.status >= 200 && res.status < 300) {
-                const stammdaten = res.json();
-                return Promise.resolve(stammdaten);
-            } else {
-                return Promise.reject('storing member failed');
-            }
-        }).then(s => {
-            newMember.id = s[0].id;
-            return Promise.all([this.saveMemberContact(newMember, newMember.eintrittsdatum),
-            this.saveMemberDfv(newMember, newMember.eintrittsdatum),
-            this.saveMemberStatus(newMember, newMember.eintrittsdatum)]).then(v => {
-                return Promise.resolve(v[0] && v[1] && v[2]);
+        return this.http.post<{ id?: number }>(insertUrl, insertedMember, { headers: headers })
+            .toPromise()
+            .then(s => {
+                newMember.id = s[0].id;
+                return Promise.all([this.saveMemberContact(newMember, newMember.eintrittsdatum),
+                this.saveMemberDfv(newMember, newMember.eintrittsdatum),
+                this.saveMemberStatus(newMember, newMember.eintrittsdatum)])
+                    .then(v => {
+                        return Promise.resolve(v[0] && v[1] && v[2]);
+                    });
             });
-        });
     }
 
     private postJsonToURL(payload: DFVRow | StatusRow | ContactRow, url: string): Promise<boolean> {
-        const headers: Headers = new Headers();
+        const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-type', 'application/json');
         return this.http.post(url, payload, { headers: headers })
-            .toPromise().then(res => {
+            .toPromise().then(
+                /*
+                  error-handling has to be done later. TODO
+                res => {
                 let result = false;
                 if (res.status >= 200 &&
                     res.status < 300) {
                     result = true;
                 } return Promise.resolve(result);
-            });
+                */
+                _ => true
+            );
 
     }
 
@@ -194,15 +191,12 @@ export class DataServiceImpl extends DataService {
     }
 
     getMembersAtDate(refDate: Date): Promise<Member[]> {
-        const contentType: Headers = new Headers();
+        const contentType: HttpHeaders = new HttpHeaders();
         contentType.append('Content-type', 'application/json');
-        return this.http.post(environment.postgrestUrl + '/rpc/func_member_at_date',
+        return this.http.post<Member[]>(environment.postgrestUrl + '/rpc/func_member_at_date',
             JSON.stringify({ ref_date: refDate }),
             { headers: contentType })
-            .toPromise()
-            .then(resp => {
-                return Promise.resolve(resp.json() as Member[]);
-            });
+            .toPromise();
 
     }
 

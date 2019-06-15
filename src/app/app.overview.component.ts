@@ -6,7 +6,7 @@ import { ComponentService } from './app.component.service';
 import { ComponentServiceImpl } from './app.component.service.impl';
 import { FilterService } from './app.filter.service';
 import { FilterServiceImpl } from './app.filter.service.impl';
-import { ViewContainerRef } from '@angular/core/src/linker/view_container_ref';
+import { ViewContainerRef } from '@angular/core';
 import { AbstractFilterDescriptor } from './filter/AbstractFilterDescriptor';
 import { injectionToken } from './filter/Filter';
 import { Subscription } from 'rxjs';
