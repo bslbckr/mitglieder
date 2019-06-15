@@ -1,5 +1,4 @@
 import { ComponentFactoryResolver, ComponentFactory, Injectable, Type } from '@angular/core';
-//import { CompilerFactory } from '@angular/core/src/linker/compiler';
 
 @Injectable()
 export abstract class AbstractFilterDescriptor<T> {
