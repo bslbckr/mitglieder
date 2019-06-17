@@ -3,7 +3,7 @@ suod: required
 services:
   - docker
 node_js:
-  - "8.9"
+  - "10"
 cache:
   directories:
     - "node_modules"
