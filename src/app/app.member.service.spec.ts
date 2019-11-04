@@ -3,13 +3,13 @@ import { Member } from './model/member';
 
 describe('test MemberService', () => {
     let service: MemberService;
-    const mem1: Member = buildMember('1980-1-1', 'm�nnlich');
-    const mem2: Member = buildMember('1980-1-2', 'm�nnlich');
+    const mem1: Member = buildMember('1980-1-1', 'männlich');
+    const mem2: Member = buildMember('1980-1-2', 'männlich');
     const mem3: Member = buildMember('1980-5-5');
     const mem4: Member = buildMember('2000-12-12');
-    const mem5: Member = buildMember('1990-10-3', 'm�nnlich');
+    const mem5: Member = buildMember('1990-10-3', 'männlich');
 
-    function buildMember(dob: string, sex: 'm�nnlich' | 'weiblich' = 'weiblich'): Member {
+    function buildMember(dob: string, sex: 'männlich' | 'weiblich' = 'weiblich'): Member {
         return {
             id: 1,
             vorname: 'Test',
@@ -24,7 +24,7 @@ describe('test MemberService', () => {
             geburtsdatum: dob,
             eintrittsdatum: '2017-12-5',
             austrittsdatum: '',
-            status: 'berufst�tig',
+            status: 'berufstätig',
             dfvnummer: 12345,
             dse: true,
             rabatt: true,

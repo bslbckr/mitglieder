@@ -34,7 +34,7 @@ export class AddMemberComponent {
                 plz: 14471,
                 ort: 'Potsdam',
                 geschlecht: 'weiblich',
-                status: 'berufst‰tig'
+                status: 'berufst√§tig'
             };
         }
     }

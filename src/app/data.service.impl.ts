@@ -12,26 +12,22 @@ export class DataServiceImpl extends DataService {
 
     getMembers(): Promise<MemberOverview[]> {
         return this.http.get<MemberOverview[]>(
-            environment.postgrestUrl + '/akt_mitglieder?select=id,vorname,name,geschlecht,status,email,geburtsdatum')
+            environment.postgrestUrl + '/mitglieder/short')
             .toPromise();
 
     }
 
-    getMemberDetails(id: string): Promise<Member> {
-        return this.http.get<Member[]>(
-            environment.postgrestUrl + '/akt_mitglieder?id=eq.' + id)
-            .toPromise()
-            .then(result => {
-                if (result && result.length === 1) {
-                    return Promise.resolve(result[0]);
-                } else {
-                    let message: string;
-                    message = !result || result.length === 0 ?
-                        'did not receive any data' :
-                        'result was ambiguous, returned array contained more than one entry';
-                    return Promise.reject(message);
-                }
-            });
+    async getMemberDetails(id: string): Promise<Member> {
+        const result = await this.http.get<Member>(
+            environment.postgrestUrl + '/mitglieder/' + id)
+            .toPromise();
+        if (result) {
+            return Promise.resolve(result);
+        } else {
+            let message: string;
+            message = 'did not receive any data';
+            return Promise.reject(message);
+        }
     }
 
     sendMemberUpdateMails(members: Member[]): Promise<string[]> {
@@ -101,48 +97,30 @@ export class DataServiceImpl extends DataService {
         return this.postJsonToURL(insertedRow, updateUrl);
     }
 
-    saveMember(newMember: Member): Promise<boolean> {
-        const insertUrl = `${environment.postgrestUrl}/stammdaten`;
-        const insertedMember = {
-            vorname: newMember.vorname,
-            name: newMember.name,
-            geburtsdatum: newMember.geburtsdatum,
-            eintrittsdatum: newMember.eintrittsdatum,
-            geschlecht: newMember.geschlecht
-        };
+    async saveMember(newMember: Member): Promise<boolean> {
+        const insertUrl = `${environment.postgrestUrl}/mitglieder`;
         const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-type', 'application/json');
-        headers.append('Prefer', 'return=representation');
-        return this.http.post<{ id?: number }>(insertUrl, insertedMember, { headers: headers })
-            .toPromise()
-            .then(s => {
-                newMember.id = s[0].id;
-                return Promise.all([this.saveMemberContact(newMember, newMember.eintrittsdatum),
-                this.saveMemberDfv(newMember, newMember.eintrittsdatum),
-                this.saveMemberStatus(newMember, newMember.eintrittsdatum)])
-                    .then(v => {
-                        return Promise.resolve(v[0] && v[1] && v[2]);
-                    });
-            });
+        const result = await this.http.post<Member>(insertUrl, newMember, { headers: headers }).toPromise();
+        newMember.id = result.id;
+        return Promise.resolve(true);
     }
 
-    private postJsonToURL(payload: DFVRow | StatusRow | ContactRow, url: string): Promise<boolean> {
+    private async postJsonToURL(payload: DFVRow | StatusRow | ContactRow, url: string): Promise<boolean> {
         const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-type', 'application/json');
-        return this.http.post(url, payload, { headers: headers })
-            .toPromise().then(
-                /*
-                  error-handling has to be done later. TODO
-                res => {
-                let result = false;
-                if (res.status >= 200 &&
-                    res.status < 300) {
-                    result = true;
-                } return Promise.resolve(result);
-                */
-                _ => true
-            );
-
+        await this.http.post(url, payload, { headers: headers })
+            .toPromise();
+        return Promise.resolve(true);
+        /*
+          error-handling has to be done later. TODO
+        res => {
+        let result = false;
+        if (res.status >= 200 &&
+            res.status < 300) {
+            result = true;
+        } return Promise.resolve(result);
+        */
     }
 
     private createMailjetMessage(m: Member, templateId: number = 260084): MailjetMessage {

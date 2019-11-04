@@ -10,8 +10,8 @@ describe('Service: FilterServiceImpl', () => {
             vorname: 'James',
             geburtsdatum: '1970-1-2',
             eintrittsdatum: '2017-5-1',
-            geschlecht: 'männlich',
-            status: 'berufstätig',
+            geschlecht: 'weiblich',
+            status: 'berufstÃ¤tig',
             dfvnummer: 123456,
             dse: true,
             rabatt: false,
@@ -34,7 +34,7 @@ describe('Service: FilterServiceImpl', () => {
     });
 
     it('the all-false filter should remove any entry from the input-array', () => {
-        const allFalse: FilterFunc = (i: Member) => false;
+        const allFalse: FilterFunc = (_: Member) => false;
         service.registerFilter('allFalse', allFalse);
         const result = service.filter(memberInput);
         expect(result).not.toBeNaN();

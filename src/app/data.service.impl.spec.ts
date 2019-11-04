@@ -24,8 +24,8 @@ describe('Service: DataServiceImpl', () => {
             vorname: 'James',
             geburtsdatum: '1970-1-2',
             eintrittsdatum: '2017-5-1',
-            geschlecht: 'm�nnlich',
-            status: 'berufst�tig',
+            geschlecht: 'männlich',
+            status: 'berufstätig',
             dfvnummer: 123456,
             dse: true,
             rabatt: false,
@@ -64,7 +64,7 @@ describe('Service: DataServiceImpl', () => {
         const receivedPayload = req.request.body;
         expect(receivedPayload.gueltig_ab).toBe('2017-12-14');
         expect(receivedPayload.id).toBe(42);
-        expect(receivedPayload.status).toBe('berufst�tig');
+        expect(receivedPayload.status).toBe('berufstätig');
         expect(receivedPayload.strasse).toBeUndefined();
         expect(receivedPayload.dfvnummer).toBeUndefined();
     });

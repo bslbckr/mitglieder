@@ -5,7 +5,7 @@
 
 export const environment = {
     production: false,
-    postgrestUrl: 'http://localhost:3000',
+    postgrestUrl: 'http://localhost:4200',
     mailjetEndpoint: 'https://api.mailjet.com/v3.1/send',
     mailjetTemplateId: 4711
 };

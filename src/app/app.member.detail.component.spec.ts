@@ -27,8 +27,8 @@ describe('Test MemberDetailComponent', () => {
                 provide: ActivatedRoute,
                 useValue: {
                     paramMap: of<ParameterMap>({
-                        get(name: string): string { return '42'; },
-                        has(name: string): boolean { return true; }
+                        get(_: string): string { return '42'; },
+                        has(_: string): boolean { return true; }
                     })
                 }
             }],
@@ -45,7 +45,23 @@ describe('Test MemberDetailComponent', () => {
 
     it('initialize component', fakeAsync(() => {
         spyOn(data, 'getMemberDetails').and.callFake((id: string) => {
-            return Promise.resolve({ id: id });
+            return Promise.resolve(
+                {
+                    id: +id,
+                    vorname: 'test',
+                    name: 'test',
+                    eintrittsdatum: new Date().toISOString(),
+                    austrittsdatum: undefined,
+                    verteiler: true,
+                    email: 'test',
+                    strasse: 'test',
+                    plz: 12345,
+                    ort: 'test',
+                    geschlecht: 'weiblich',
+                    status: 'berufstätig',
+                    geburtsdatum: new Date().toISOString()
+                } as Member
+            );
         });
         const fixutre: ComponentFixture<MemberDetailComponent> = getTestBed().createComponent(MemberDetailComponent);
         component = fixutre.debugElement.componentInstance;
@@ -58,22 +74,24 @@ describe('Test MemberDetailComponent', () => {
     }));
 
     function spyOnData() {
-        spyOn(data, 'getMemberDetails').and.returnValue({
-            then: function(fn: (m: any) => void) {
-                fn({
-                    id: '42',
-                    vorname: 'Test',
-                    name: 'Person',
-                    email: 'q@test.com',
-                    status: 'passiv',
-                    dse: true,
-                    rabatt: false,
-                    verteiler: true,
-                    dfvnummer: 123456
-                });
-            }
-
-        });
+        spyOn(data, 'getMemberDetails').and.returnValue(
+            Promise.resolve({
+                id: 42,
+                vorname: 'Test',
+                name: 'Person',
+                email: 'q@test.com',
+                status: 'passiv',
+                dse: true,
+                rabatt: false,
+                verteiler: true,
+                dfvnummer: 123456,
+                strasse: 'test',
+                plz: 1234,
+                ort: 'test',
+                eintrittsdatum: new Date().toISOString(),
+                geburtsdatum: new Date().toISOString(),
+                geschlecht: 'weiblich'
+            }));
     }
 
     it('rendering', () => {

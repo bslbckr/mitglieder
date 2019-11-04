@@ -4,29 +4,55 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { MemberEditComponent } from './app.member.edit.component';
 import { DataService } from './data.service';
+import { Member } from './model/member';
+import { MemberOverview } from './model/member-overview';
 
 interface ParameterMap {
     get(n: string): string;
 }
 
+class DataServiceMock extends DataService {
+
+    saveMemberStatus(member: Member, refDate: string): Promise<boolean> { return Promise.resolve(true); }
+    saveMemberContact(member: Member, refDate: string): Promise<boolean> { return Promise.resolve(true); }
+    saveMemberDfv(member: Member, refDate: string): Promise<boolean> { return Promise.resolve(true); }
+    getMemberDetails(id: string): Promise<Member> {
+        return Promise.resolve({
+            id: 42,
+            vorname: 'Test',
+            name: 'Person',
+            dse: true,
+            rabatt: false,
+            verteiler: true,
+            email: 'q@test.de',
+            mobil: '1234/56789',
+            geburtsdatum: '1980-07-06',
+            status: 'passiv',
+            geschlecht: 'männlich',
+            eintrittsdatum: '2007-8-9',
+            strasse: 'test',
+            plz: 1234,
+            ort: 'test'
+        });
+    }
+    getMembers(): Promise<MemberOverview[]> { throw new Error(); }
+    getMembersAtDate(_: Date): Promise<Member[]> { throw new Error(); }
+    saveMember(_: Member): Promise<boolean> { throw new Error(); }
+    sendMemberUpdateMails(_: Member[]): Promise<string[]> { throw new Error(); }
+}
 describe('MemberEditComponent', () => {
 
     let component: MemberEditComponent;
     const mockedRouter = {
-        navigate: function(args: any) { }
+        navigate: function(_: any) { }
     },
         mockedActRoute = {
             paramMap: of<ParameterMap>({
 
-                get: function(name: string): string { return '42'; }
+                get: function(_: string): string { return '42'; }
             })
         },
-        mockedData = {
-            getMemberDetails: function() { },
-            saveMemberDfv: function() { },
-            saveMemberStatus: function() { },
-            saveMemberContact: function() { }
-        };
+        mockedData: DataService = new DataServiceMock();
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -55,33 +81,34 @@ describe('MemberEditComponent', () => {
     });
 
     function setupAndInitialize(): ComponentFixture<MemberEditComponent> {
-        spyOn(mockedData, 'getMemberDetails').and.returnValue({
-            then: function(fn: (any) => void) {
-                fn({
-                    id: 42,
-                    vorname: 'Test',
-                    name: 'Person',
-                    dse: true,
-                    rabatt: false,
-                    verteiler: true,
-                    email: 'q@test.de',
-                    mobil: '1234/56789',
-                    geburtsdatum: '1980-07-06',
-                    status: 'passiv',
-                    geschlecht: 'm�nnlich',
-                    eintrittsdatum: '2007-8-9'
-                });
-            }
-        });
-        spyOn(mockedData, 'saveMemberDfv').and.returnValue({
-            then: function(fn: Function) { fn(true); }
-        });
-        spyOn(mockedData, 'saveMemberContact').and.returnValue({
-            then: function(fn: Function) { fn(true); }
-        });
-        spyOn(mockedData, 'saveMemberStatus').and.returnValue({
-            then: function(fn: Function) { fn(true); }
-        });
+        spyOn(mockedData, 'getMemberDetails')/*.and.returnValue(
+            Promise.resolve({
+                id: 42,
+                vorname: 'Test',
+                name: 'Person',
+                dse: true,
+                rabatt: false,
+                verteiler: true,
+                email: 'q@test.de',
+                mobil: '1234/56789',
+                geburtsdatum: '1980-07-06',
+                status: 'passiv',
+                geschlecht: 'männlich',
+                eintrittsdatum: '2007-8-9',
+                strasse: 'test',
+                plz: 1234,
+                ort: 'test'
+            })
+        )*/;
+        spyOn(mockedData, 'saveMemberDfv')/*.and.returnValue(
+            Promise.resolve(true)
+        )*/;
+        spyOn(mockedData, 'saveMemberContact')/*.and.returnValue(
+            Promise.resolve(true)
+        )*/;
+        spyOn(mockedData, 'saveMemberStatus')/*.and.returnValue(
+            Promise.resolve(true)
+        )*/;
         const fixture = getTestBed().createComponent(MemberEditComponent);
         component = fixture.debugElement.componentInstance;
         component.ngOnInit();
@@ -100,7 +127,7 @@ describe('MemberEditComponent', () => {
     it('component status changed', () => {
         setupAndInitialize();
         expect(component.saveRequired).toBeFalsy();
-        component.member.status = 'erm��igt';
+        component.member.status = 'ermäßigt';
         expect(component.saveRequired).toBeTruthy();
     });
 
@@ -128,7 +155,7 @@ describe('MemberEditComponent', () => {
         component.revert();
         expect(component.member.dse).toBe(true);
         expect(component.member.eintrittsdatum).toBe('2007-8-9');
-        expect(component.member.geschlecht).toBe('m�nnlich');
+        expect(component.member.geschlecht).toBe('männlich');
     });
 
     it('save - no changes', () => {
@@ -146,7 +173,7 @@ describe('MemberEditComponent', () => {
         spyOn(mockedRouter, 'navigate').and.callThrough();
         setupAndInitialize();
         const saveDate = '2017-12-22';
-        component.member.status = 'berufst�tig';
+        component.member.status = 'berufstätig';
         component.save(saveDate);
         expect(mockedData.saveMemberStatus).toHaveBeenCalledWith(jasmine.anything(), saveDate);
         expect(mockedData.saveMemberDfv).not.toHaveBeenCalled();
